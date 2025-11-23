@@ -6,6 +6,7 @@ import me.shedaniel.clothconfig2.api.ConfigEntryBuilder;
 import net.minecraft.network.chat.Component;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
+
 import java.util.ArrayList;
 
 public final class EpistaloveClothConfigScreen {
@@ -193,6 +194,7 @@ public final class EpistaloveClothConfigScreen {
 
         return root;
     }
+
     public static void registerModsPage(ModContainer modContainer) {
         modContainer.registerExtensionPoint(IConfigScreenFactory.class, (container, parent) -> getConfigBuilder().setParentScreen(parent).build());
     }

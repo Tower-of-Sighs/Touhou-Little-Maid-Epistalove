@@ -93,7 +93,7 @@ public final class LetterDeliveryService {
                     }
                 }
             }
-            
+
             ItemHandlerHelper.giveItemToPlayer(owner, parcelCopy);
             removeOneMarkedParcel(maid);
         }

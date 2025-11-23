@@ -5,7 +5,6 @@ import com.sighs.touhou_little_maid_epistalove.api.letter.ILetterGenerator;
 import com.sighs.touhou_little_maid_epistalove.api.letter.ILetterRule;
 import com.sighs.touhou_little_maid_epistalove.api.trigger.ITriggerManager;
 import com.sighs.touhou_little_maid_epistalove.trigger.TriggerManager;
-import net.minecraft.advancements.Advancement;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;

@@ -1,7 +1,7 @@
 LetterEvents.registerLetterRules(event => {
     event.createAI('first_gift_kjs', 'lonesome', '主人获得了成就:${str}，请为他写封信')
         .trigger('touhou_little_maid_epistalove:advancement_gain')
-        .repeat()
+        .once()
         .minAffection(0)
         .maxAffection(500)
         .cooldown(100)
@@ -23,7 +23,7 @@ LetterEvents.registerLetterRules(event => {
 
     event.create()
         .id('first_gift')
-        .aiGenerator('', '')
+        .aiGenerator('lonesome', '')
         .trigger('touhou_little_maid_epistalove:first_gift_trigger')
         .repeat()
         .minAffection(30)

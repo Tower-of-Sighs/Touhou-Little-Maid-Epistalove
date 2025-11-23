@@ -18,6 +18,7 @@ import java.util.Optional;
 
 public final class MailboxSafetyEvaluator {
     private static final Logger LOGGER = LoggerFactory.getLogger(MailboxSafetyEvaluator.class);
+
     private MailboxSafetyEvaluator() {
     }
 

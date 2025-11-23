@@ -2,6 +2,7 @@ package com.sighs.touhou_little_maid_epistalove.config;
 
 
 import net.neoforged.neoforge.common.ModConfigSpec;
+
 import java.util.List;
 
 public class AILetterConfig {
@@ -32,6 +33,7 @@ public class AILetterConfig {
     public static final ModConfigSpec.ConfigValue<List<? extends String>> CREATIVITY_TIPS;
 
     private static final String TRANSLATE_KEY = "config.touhou_little_maid_epistalove.ai_letter";
+
     private static String translateKey(String key) {
         return TRANSLATE_KEY + "." + key;
     }

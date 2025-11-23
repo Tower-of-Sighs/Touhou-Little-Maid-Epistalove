@@ -1,9 +1,9 @@
 package com.sighs.touhou_little_maid_epistalove.api.letter;
 
 import com.github.tartaricacid.touhoulittlemaid.entity.passive.EntityMaid;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
 
 import java.util.function.Consumer;
 
