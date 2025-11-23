@@ -77,7 +77,7 @@ public class AILetterGenerator implements ILetterGenerator {
     }
 
     private void startAIChat(ServerPlayer owner, EntityMaid maid, CompoundTag context,
-                              MaidAIChatManager chatManager, LLMSite site, Consumer<ItemStack> callback) {
+                             MaidAIChatManager chatManager, LLMSite site, Consumer<ItemStack> callback) {
         String system = promptBuilder.buildSystemPrompt(tone, maid, owner);
         String userPrompt = interpolatePrompt(this.prompt, context);
         LLMClient client = site.client();

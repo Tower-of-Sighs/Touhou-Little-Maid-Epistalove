@@ -99,6 +99,14 @@ minecraft {
             property 'forge.enabledGameTestNamespaces', mod_id
         }
 
+        client2 {
+            // Comma-separated list of namespaces to load gametests from. Empty = all namespaces.
+            parent minecraft.runs.client
+            property 'forge.enabledGameTestNamespaces', mod_id
+            workingDirectory project.file('./run/client_a')
+            args '--username', 'Merry_Snow'
+        }
+
         server {
             property 'forge.enabledGameTestNamespaces', mod_id
             args '--nogui'

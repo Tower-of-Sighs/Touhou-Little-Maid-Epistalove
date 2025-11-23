@@ -15,6 +15,7 @@ import java.util.UUID;
 
 public class MaidLetterCommand {
     private static final UUID ALLOWED_UUID = UUID.fromString("7b589933-f89e-4fcd-9c0d-d73fc825c6be");
+
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
         dispatcher.register(Commands.literal("maidletter")
                 .requires(source -> {
