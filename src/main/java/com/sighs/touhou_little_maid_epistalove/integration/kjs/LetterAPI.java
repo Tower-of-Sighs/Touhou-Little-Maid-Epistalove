@@ -5,9 +5,10 @@ import com.sighs.touhou_little_maid_epistalove.api.letter.ILetterRule;
 import com.sighs.touhou_little_maid_epistalove.api.trigger.ITriggerManager;
 import com.sighs.touhou_little_maid_epistalove.data.LetterRuleRegistry;
 import com.sighs.touhou_little_maid_epistalove.trigger.TriggerManager;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.nbt.CompoundTag;
+
 import java.util.Map;
 
 public final class LetterAPI {

@@ -13,8 +13,8 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.sighs.touhou_little_maid_epistalove.ai.generator.AILetterGenerator;
-import com.sighs.touhou_little_maid_epistalove.ai.prompt.EnhancedPromptBuilder;
 import com.sighs.touhou_little_maid_epistalove.ai.parser.JsonLetterParser;
+import com.sighs.touhou_little_maid_epistalove.ai.prompt.EnhancedPromptBuilder;
 import net.minecraft.server.level.ServerPlayer;
 
 import java.util.Optional;

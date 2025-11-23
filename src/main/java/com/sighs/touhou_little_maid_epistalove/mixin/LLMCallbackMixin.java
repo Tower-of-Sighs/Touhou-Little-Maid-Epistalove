@@ -16,7 +16,6 @@ import com.github.tartaricacid.touhoulittlemaid.ai.service.llm.openai.response.M
 import com.github.tartaricacid.touhoulittlemaid.ai.service.llm.openai.response.ToolCall;
 import com.github.tartaricacid.touhoulittlemaid.entity.passive.EntityMaid;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonSyntaxException;
 import com.mojang.serialization.JsonOps;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.GsonHelper;
@@ -37,10 +36,13 @@ public abstract class LLMCallbackMixin implements ResponseCallback<Object> {
     @Shadow
     @Final
     protected MaidAIChatManager chatManager;
-    @Shadow protected int callCount;
-    @Shadow protected String message;
+    @Shadow
+    protected int callCount;
+    @Shadow
+    protected String message;
 
-    @Shadow public abstract void onFailure(HttpRequest request, Throwable throwable, int errorCode);
+    @Shadow
+    public abstract void onFailure(HttpRequest request, Throwable throwable, int errorCode);
 
     /**
      * 针对 write_letter 的函数调用做特殊处理：

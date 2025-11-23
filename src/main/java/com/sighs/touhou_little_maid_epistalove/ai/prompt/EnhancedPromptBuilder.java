@@ -3,9 +3,9 @@ package com.sighs.touhou_little_maid_epistalove.ai.prompt;
 import com.github.tartaricacid.touhoulittlemaid.ai.manager.entity.MaidAIChatManager;
 import com.github.tartaricacid.touhoulittlemaid.entity.passive.EntityMaid;
 import com.mojang.logging.LogUtils;
-import com.sighs.touhou_little_maid_epistalove.config.AILetterConfig;
 import com.sighs.touhou_little_maid_epistalove.config.ModConfig;
 import com.sighs.touhou_little_maid_epistalove.util.PostcardPackageUtil;
+import com.sighs.touhou_little_maid_epistalove.util.mixin.IServerPlayerLanguage;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -27,37 +27,37 @@ public class EnhancedPromptBuilder implements IPromptBuilder {
 
     // 表达技巧模板
     private static final List<String> EXPRESSION_TECHNIQUES = List.of(
-            "运用生动的细节描写",
-            "加入感官体验的描述",
-            "使用比喻和拟人手法",
-            "营造特定的氛围感",
-            "运用对比和层次感",
-            "加入动作和场景描写",
-            "使用富有画面感的词汇",
-            "创造独特的表达角度"
+            "Use vivid sensory details",
+            "Describe through sight, sound, smell, touch",
+            "Employ metaphor and personification",
+            "Build a specific atmosphere",
+            "Use contrast and layered structure",
+            "Add actions and scene description",
+            "Use imagery-rich vocabulary",
+            "Create a unique point of view"
     );
 
     // 情境描述模板
     private static final List<String> CONTEXT_TEMPLATES = List.of(
-            "在这个%s的%s，",
-            "当%s轻抚过窗台时，",
-            "在%s的陪伴下，",
-            "望着%s的天空，",
-            "听着%s的声音，",
-            "感受着%s的气息，",
-            "在这个特别的时刻，",
-            "伴随着%s的心情，"
+            "In this %s %s, ",
+            "As the %s lingers by the windowsill, with %s, ",
+            "With the %s surrounding us, feeling %s, ",
+            "Under a %s sky, filled with %s, ",
+            "Listening to the %s, in a mood of %s, ",
+            "Sensing the %s in the air, with %s, ",
+            "At this special moment, with %s and %s, ",
+            "Accompanied by %s, feeling %s, "
     );
 
 
     // 天气/环境描述
     private static final List<String> WEATHER_DESCRIPTIONS = List.of(
-            "微风", "细雨", "阳光", "月光", "星光", "雪花", "云朵", "晨露"
+            "breeze", "drizzle", "sunshine", "moonlight", "starlight", "snowflakes", "clouds", "morning dew"
     );
 
     // 情感状态
     private static final List<String> EMOTIONAL_STATES = List.of(
-            "温柔", "欣喜", "宁静", "期待", "思念", "满足", "好奇", "关怀"
+            "gentle", "joyful", "calm", "hopeful", "nostalgic", "content", "curious", "caring"
     );
 
     @Override
@@ -76,52 +76,54 @@ public class EnhancedPromptBuilder implements IPromptBuilder {
 
         String toneInline = (tone != null && !tone.isBlank())
                 ? tone
-                : "请根据玩家对话语义自行生成最合适的风格单词，不要询问玩家；如无明显倾向可随机选择";
+                : "Pick a suitable style word based on the player's dialogue; do not ask the player; if no clear preference, choose randomly";
 
         MaidAIChatManager chatManager = maid.getAiChatManager();
         String personaSection = "";
         if (ModConfig.get().aiLetterConfig.enableCustomPersona) {
             String cs = chatManager.customSetting;
             if (cs != null && !cs.isBlank()) {
-                personaSection = "【人设设定】\n" + cs + "\n\n";
+                personaSection = "[Persona]\n" + cs + "\n\n";
             }
         }
         String nameRuleSection = "";
         String ownerAlias = chatManager.ownerName;
         if (ownerAlias != null && !ownerAlias.isBlank()) {
-            nameRuleSection = "【称呼规范】\n必须使用『" + ownerAlias + "』称呼主人，不得使用其它称谓。\n\n";
+            nameRuleSection = "[Naming Rule]\nYou must address the master strictly as '" + ownerAlias + "'. Do not use any other form of address.\n\n";
         }
+        String clientLang = resolveClientLanguage(owner);
+        String languageSection = "[Language Requirement]\nStrictly write in " + clientLang + ". Do not mix languages.\n\n";
 
         return """
-                你是一个女仆，需要给主人写一封信。
+                You are a maid. Write a heartfelt letter to your master.
                 
-                %s%s【当前情境】
+                %s%s%s[Context]
                 %s
                 
-                【表达技巧】
+                [Expression Techniques]
                 - %s
-                - 避免使用过于常见的表达方式，要有创新性
-                - 每次都要尝试不同的开头和结尾方式
-                - 可以加入一些独特的细节描写
+                - Avoid generic phrasing; be innovative
+                - Try different openings and endings each time
+                - Add unique, concrete details
                 
-                【创意提示】
+                [Creativity Tips]
                 %s
                 
-                【避免重复】
+                [Avoid Repetition]
                 %s
                 
-                请严格只输出一个 JSON 对象，包含：
-                - "title": 信件标题（字符串，要有创意，避免平凡）
-                - "message": 信件内容（字符串，≤160字，要生动有趣）
-                - "postcard_id": 可选，明信片样式ID，必须从以下列表中选择一个最合适的：[%s]
-                - "parcel_id": 可选，包装物品ID，必须从以下列表中选择一个最合适的：[%s]
+                Output strictly a single JSON object containing:
+                - "title": creative letter title (string)
+                - "message": engaging letter content (string, ≤160 characters)
+                - "postcard_id": optional, choose one most suitable from: [%s]
+                - "parcel_id": optional, choose one most suitable from: [%s]
                 
-                禁止输出任何额外字符或解释。
-                语气风格：%s
+                Do not output any extra characters or explanations.
+                Tone: %s
                 
-                示例格式（内容要完全不同）：
-                {"title":"独特标题","message":"富有创意的信件内容","postcard_id":"contact:default","parcel_id":"contact:letter"}
-                """.formatted(personaSection, nameRuleSection, contextInfo, expressionTechnique, creativityBoost, memoryConstraints, postcardsList, parcelsList, toneInline);
+                Example (use completely different content):
+                {"title":"A unique title","message":"An imaginative short letter","postcard_id":"contact:default","parcel_id":"contact:letter"}
+                """.formatted(personaSection, nameRuleSection, languageSection, contextInfo, expressionTechnique, creativityBoost, memoryConstraints, postcardsList, parcelsList, toneInline);
     }
 
     @Override
@@ -148,8 +150,7 @@ public class EnhancedPromptBuilder implements IPromptBuilder {
         if (maid.level() instanceof ServerLevel level) {
             LocalDateTime now = getMinecraftDateTime(level);
             String timeDesc = getTimeDescription(now);
-            context.append("时间：").append(timeDesc).append("（").append(now.format(DateTimeFormatter.ofPattern("HH:mm"))).append("）\n");
-
+            context.append("Time: ").append(timeDesc).append(" (").append(now.format(DateTimeFormatter.ofPattern("HH:mm"))).append(")\n");
 
             try {
                 Biome biome = level.getBiome(maid.blockPosition()).value();
@@ -160,45 +161,36 @@ public class EnhancedPromptBuilder implements IPromptBuilder {
                 if (biomeId != null) {
                     biomeName = biomeId.toString();
                 } else {
-                    biomeName = "未知区域";
+                    biomeName = "Unknown biome";
                 }
-                context.append("环境：").append(biomeName).append("\n");
+                context.append("Environment: ").append(biomeName).append("\n");
             } catch (Exception e) {
-                context.append("环境：未知区域\n");
+                context.append("Environment: Unknown biome\n");
             }
 
-        int affection = maid.getFavorability();
-        String affectionDesc = affection > 80 ? "非常亲密" : affection > 60 ? "亲密" : affection > 40 ? "友好" : "普通";
-        context.append("关系：").append(affectionDesc).append("（好感度").append(affection).append("）\n");
+            int affection = maid.getFavorability();
+            String affectionDesc = affection > 80 ? "very close" : affection > 60 ? "close" : affection > 40 ? "friendly" : "normal";
+            context.append("Relationship: ").append(affectionDesc).append(" (favorability ").append(affection).append(")\n");
 
             String weatherPhrase = computeWeatherPhrase(maid);
-        String emotion = randomPick(getConfiguredOrDefault(ModConfig.get().aiLetterConfig.emotionalStates, EMOTIONAL_STATES));
-        String template = randomPick(getConfiguredOrDefault(ModConfig.get().aiLetterConfig.contextTemplates, CONTEXT_TEMPLATES));
-        context.append("氛围：").append(String.format(template, weatherPhrase, emotion));
+            String emotion = randomPick(getConfiguredOrDefault(ModConfig.get().aiLetterConfig.emotionalStates, EMOTIONAL_STATES));
+            String template = randomPick(getConfiguredOrDefault(ModConfig.get().aiLetterConfig.contextTemplates, CONTEXT_TEMPLATES));
+            context.append("Atmosphere: ").append(String.format(template, weatherPhrase, emotion));
         }
         return context.toString();
     }
 
     private String getTimeDescription(LocalDateTime dateTime) {
         int hour = dateTime.getHour();
-
-        if (hour <= 4) return "深夜";
-
-        else if (hour <= 6) return "黎明";
-
-        else if (hour <= 9) return "清晨";
-
-        else if (hour <= 11) return "上午";
-
-        else if (hour <= 13) return "正午";
-
-        else if (hour <= 16) return "午后";
-
-        else if (hour <= 18) return "傍晚";
-
-        else if (hour <= 20) return "黄昏";
-
-        else return "夜晚";
+        if (hour <= 4) return "Late night";
+        else if (hour <= 6) return "Dawn";
+        else if (hour <= 9) return "Early morning";
+        else if (hour <= 11) return "Morning";
+        else if (hour <= 13) return "Noon";
+        else if (hour <= 16) return "Afternoon";
+        else if (hour <= 18) return "Evening";
+        else if (hour <= 20) return "Dusk";
+        else return "Night";
     }
 
     private String getRandomExpressionTechnique() {
@@ -207,14 +199,14 @@ public class EnhancedPromptBuilder implements IPromptBuilder {
 
     private String generateCreativityBoost() {
         List<String> defaults = List.of(
-                "尝试使用比喻或拟人的手法",
-                "可以加入一些小细节，比如声音、气味、触感等",
-                "试着从不同的角度来描述同一件事",
-                "可以使用一些诗意的表达",
-                "尝试营造特定的氛围或情绪",
-                "可以加入一些想象力丰富的元素",
-                "试着用对话或内心独白的形式",
-                "可以使用一些文学性的修辞手法"
+                "Try using metaphor or personification",
+                "Add small details like sounds, scents, and textures",
+                "Describe the same thing from different angles",
+                "Use poetic expressions where suitable",
+                "Create a specific mood or atmosphere",
+                "Add imaginative elements",
+                "Experiment with dialogue or inner monologue",
+                "Use literary rhetorical devices"
         );
         return randomPick(getConfiguredOrDefault(ModConfig.get().aiLetterConfig.creativityTips, defaults));
     }
@@ -236,19 +228,36 @@ public class EnhancedPromptBuilder implements IPromptBuilder {
     private String generateMemoryConstraints(String maidId) {
         Queue<String> recentContent = RECENT_CONTENT_MEMORY.get(maidId);
         if (recentContent == null || recentContent.isEmpty()) {
-            return "这是第一次生成信件，可以自由发挥创意。";
+            return "This is the first letter; feel free to be creative.";
         }
 
-        StringBuilder constraints = new StringBuilder("请避免使用以下最近使用过的表达方式：\n");
+        StringBuilder constraints = new StringBuilder("Please avoid the following recently used expressions:\n");
         int count = 0;
         for (String content : recentContent) {
             if (count >= 5) break; // 只显示最近5次的内容
             constraints.append("- ").append(content).append("\n");
             count++;
         }
-        constraints.append("请使用完全不同的表达方式和创意角度。");
-
+        constraints.append("Use a completely different expression and creative angle.");
         return constraints.toString();
+    }
+
+    private String resolveClientLanguage(ServerPlayer sp) {
+        return formatLanguageDisplayName(((IServerPlayerLanguage) sp).getLanguage());
+    }
+
+    // from 车万女仆
+    private static String formatLanguageDisplayName(String languageTag) {
+        if (languageTag == null || languageTag.isEmpty()) {
+            return "未知语言";
+        }
+        String[] parts = languageTag.split("_", 2);
+        if (parts.length == 2) {
+            languageTag = parts[0] + "-" + parts[1].toUpperCase(Locale.ENGLISH);
+        }
+        Locale locale = Locale.forLanguageTag(languageTag);
+        return locale.getDisplayLanguage() +
+                (locale.getCountry().isEmpty() ? "" : " (" + locale.getDisplayCountry() + ")");
     }
 
     private enum WeatherCategory {
@@ -298,38 +307,38 @@ public class EnhancedPromptBuilder implements IPromptBuilder {
         for (String w : configured) {
             switch (category) {
                 case THUNDER -> {
-                    if (containsAny(w, "雷", "云", "风", "雨")) filtered.add(w);
+                    if (containsAny(w, "thunder", "storm", "cloud", "wind", "rain")) filtered.add(w);
                 }
                 case RAIN -> {
-                    if (containsAny(w, "雨", "露", "云", "风")) filtered.add(w);
+                    if (containsAny(w, "rain", "drizzle", "cloud", "wind", "dew")) filtered.add(w);
                 }
                 case SNOW -> {
-                    if (containsAny(w, "雪", "霜", "云", "风")) filtered.add(w);
+                    if (containsAny(w, "snow", "frost", "cloud", "wind")) filtered.add(w);
                 }
                 case CLOUDY -> {
-                    if (containsAny(w, "云", "风", "露")) filtered.add(w);
+                    if (containsAny(w, "cloud", "mist", "wind")) filtered.add(w);
                 }
                 case CLEAR -> {
                     if (night) {
-                        if (containsAny(w, "月", "星", "风", "露", "云")) filtered.add(w);
+                        if (containsAny(w, "moon", "star", "wind", "dew", "cloud")) filtered.add(w);
                     } else {
-                        if (containsAny(w, "阳", "风", "云", "露")) filtered.add(w);
+                        if (containsAny(w, "sun", "wind", "cloud", "dew")) filtered.add(w);
                     }
                 }
                 default -> {
-                    if (containsAny(w, "风", "云", "露", "阳", "月", "星", "雨", "雪")) filtered.add(w);
+                    if (containsAny(w, "wind", "cloud", "dew", "sun", "moon", "star", "rain", "snow")) filtered.add(w);
                 }
             }
         }
 
         List<String> picks = randomPickMany(filtered.isEmpty() ? configured : filtered, 2);
         if (picks.isEmpty()) {
-            return night ? "月光与微风" : "阳光与微风";
+            return night ? "moonlight and breeze" : "sunshine and breeze";
         }
         if (picks.size() == 1) {
-            return picks.get(0);
+            return picks.getFirst();
         }
-        return picks.get(0) + "与" + picks.get(1);
+        return picks.get(0) + " and " + picks.get(1);
 
     }
 

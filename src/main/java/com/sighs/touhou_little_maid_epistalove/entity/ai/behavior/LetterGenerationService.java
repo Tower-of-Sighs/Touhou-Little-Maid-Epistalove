@@ -2,8 +2,8 @@ package com.sighs.touhou_little_maid_epistalove.entity.ai.behavior;
 
 import com.flechazo.contact.common.item.IPackageItem;
 import com.github.tartaricacid.touhoulittlemaid.api.entity.data.TaskDataKey;
-import com.github.tartaricacid.touhoulittlemaid.entity.passive.EntityMaid;
 import com.github.tartaricacid.touhoulittlemaid.entity.favorability.FavorabilityManager;
+import com.github.tartaricacid.touhoulittlemaid.entity.passive.EntityMaid;
 import com.github.tartaricacid.touhoulittlemaid.util.ItemsUtil;
 import com.mojang.logging.LogUtils;
 import com.sighs.touhou_little_maid_epistalove.api.letter.ILetterRule;

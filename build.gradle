@@ -10,9 +10,13 @@ base {
     archivesName = "${mod_id}-fabric-${minecraft_version}"
 }
 
-//loom {
-//    accessWidenerPath = file("src/main/resources/sophisticatedsorter.accesswidener")
-//}
+loom {
+    runs {
+        client {
+            programArgs "--username", "Merry_Snow"
+        }
+    }
+}
 
 repositories {
     maven {
@@ -135,7 +139,7 @@ processResources {
     }
 }
 
-def targetJavaVersion = 17
+def targetJavaVersion = 21
 tasks.withType(JavaCompile).configureEach {
     // ensure that the encoding is set to UTF-8, no matter what the system default is
     // this fixes some edge cases with special characters not displaying correctly

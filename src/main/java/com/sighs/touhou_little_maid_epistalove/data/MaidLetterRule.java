@@ -60,9 +60,9 @@ public record MaidLetterRule(
                     Codec.INT.optionalFieldOf("cooldown")
                             .forGetter(MaidLetterRule::cooldown),
                     Codec.INT.optionalFieldOf("favorability_change")
-                                    .forGetter(MaidLetterRule::favorabilityChange),
+                            .forGetter(MaidLetterRule::favorabilityChange),
                     Codec.INT.optionalFieldOf("favorability_threshold")
-                                    .forGetter(MaidLetterRule::favorabilityThreshold),
+                            .forGetter(MaidLetterRule::favorabilityThreshold),
                     Preset.CODEC.optionalFieldOf("preset").forGetter(MaidLetterRule::preset),
                     AI.CODEC.optionalFieldOf("ai").forGetter(MaidLetterRule::ai),
                     Codec.STRING.listOf()
