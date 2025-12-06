@@ -91,7 +91,7 @@ neoForge {
             client()
             systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
             programArgument "--username"
-            programArgument "Merry_Snow"
+            programArgument "Flechazo"
         }
 
         server {
