@@ -5,7 +5,7 @@ import com.flechazo.contact.common.handler.MailboxManager;
 import com.flechazo.contact.common.item.IPackageItem;
 import com.flechazo.contact.common.item.PostcardItem;
 import com.flechazo.contact.common.storage.MailToBeSent;
-import com.flechazo.contact.common.storage.MailboxDataManager;
+import com.flechazo.contact.platform.PlatformHelper;
 import com.github.tartaricacid.touhoulittlemaid.entity.passive.EntityMaid;
 import com.github.tartaricacid.touhoulittlemaid.util.ItemsUtil;
 import com.mojang.logging.LogUtils;
@@ -102,7 +102,7 @@ public final class LetterDeliveryService {
     private static boolean sendViaPostbox(ServerLevel level, ServerPlayer owner, ItemStack parcel,
                                           BlockPos postboxPos, EntityMaid maid) {
         GlobalPos from = GlobalPos.of(level.dimension(), postboxPos);
-        GlobalPos to = MailboxDataManager.getData(level).getMailboxPos(owner.getUUID());
+        GlobalPos to = PlatformHelper.getMailboxPos(owner.getUUID());
 
         ItemStack parcelCopy = parcel.copy();
         String senderName = maid.getName().getString();
@@ -125,7 +125,7 @@ public final class LetterDeliveryService {
 
         int ticks = (to != null) ? MailboxManager.getDeliveryTicks(from, to) : 0;
         MailToBeSent mailToBeSent = new MailToBeSent(owner.getUUID(), parcelCopy, ticks);
-        MailboxDataManager.getData(level).getMailList().add(mailToBeSent);
+        PlatformHelper.getMailList().add(mailToBeSent);
         return true;
     }
 

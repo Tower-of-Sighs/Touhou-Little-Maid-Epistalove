@@ -1,7 +1,7 @@
 package com.sighs.touhou_little_maid_epistalove.data;
 
+import cc.sighs.oelib.data.api.DataDriven;
 import com.flechazo.contact.Contact;
-import com.mafuyu404.oelib.api.data.DataDriven;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.sighs.touhou_little_maid_epistalove.TLMEpistalove;

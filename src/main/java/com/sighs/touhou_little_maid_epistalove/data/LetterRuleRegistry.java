@@ -1,7 +1,7 @@
 package com.sighs.touhou_little_maid_epistalove.data;
 
+import cc.sighs.oelib.neoforge.data.DataManager;
 import com.github.tartaricacid.touhoulittlemaid.entity.passive.EntityMaid;
-import com.mafuyu404.oelib.neoforge.data.DataManager;
 import com.mojang.logging.LogUtils;
 import com.sighs.touhou_little_maid_epistalove.api.letter.ILetterRule;
 import net.minecraft.server.level.ServerPlayer;
