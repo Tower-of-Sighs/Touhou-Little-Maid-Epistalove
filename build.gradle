@@ -71,11 +71,11 @@ dependencies {
     modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
     // OELib
-    modImplementation 'com.mafuyu404.oelib:OELib-fabric-1.20.1:0.0.6'
+    modImplementation 'cc.sighs.oelib:OELib-fabric-1.20.1:0.2.2'
     implementation "org.mvel:mvel2:2.5.0.Final"
 
     // Contact
-    modImplementation(files("libs/Contact-fabric-1.20.1-1.2.2.jar"))
+    modImplementation('com.flechazo:Contact-fabric:1.2.3')
     modImplementation   "curse.maven:jupiter-1072905:6843040"
     modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-world:${project.cca_version}"
 

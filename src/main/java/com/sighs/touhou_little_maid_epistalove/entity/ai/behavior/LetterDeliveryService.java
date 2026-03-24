@@ -6,7 +6,8 @@ import com.flechazo.contact.common.item.IPackageItem;
 import com.flechazo.contact.common.item.PostcardItem;
 import com.flechazo.contact.common.storage.MailToBeSent;
 import com.flechazo.contact.fabric.capability.FabricMailboxDataProvider;
-import com.flechazo.contact.fabric.capability.MailboxDataComponent;
+import com.flechazo.contact.fabric.capability.MailboxSavedData;
+import com.flechazo.contact.platform.PlatformHelper;
 import com.github.tartaricacid.touhoulittlemaid.entity.passive.EntityMaid;
 import com.github.tartaricacid.touhoulittlemaid.util.ItemsUtil;
 import com.mojang.logging.LogUtils;
@@ -101,11 +102,9 @@ public final class LetterDeliveryService {
 
     private static boolean sendViaPostbox(ServerLevel level, ServerPlayer owner, ItemStack parcel,
                                           BlockPos postboxPos, EntityMaid maid) {
-        MailboxDataComponent component = MailboxDataComponent.KEY.get(level);
-        FabricMailboxDataProvider dataProvider = new FabricMailboxDataProvider(component.getData());
 
         GlobalPos from = GlobalPos.of(level.dimension(), postboxPos);
-        GlobalPos to = dataProvider.getMailboxPos(owner.getUUID());
+        GlobalPos to = PlatformHelper.getMailboxPos(owner.getUUID());
 
         ItemStack parcelCopy = parcel.copy();
         CompoundTag tag = parcelCopy.getOrCreateTag();
@@ -128,9 +127,8 @@ public final class LetterDeliveryService {
         }
 
         int ticks = (to != null) ? MailboxManager.getDeliveryTicks(from, to) : 0;
-        dataProvider.getMailList().add(new MailToBeSent(owner.getUUID(), parcelCopy, ticks));
-
-        MailboxDataComponent.KEY.sync(level);
+        MailToBeSent mailToBeSent = new MailToBeSent(owner.getUUID(), parcelCopy, ticks);
+        PlatformHelper.getMailList().add(mailToBeSent);
 
         return true;
     }

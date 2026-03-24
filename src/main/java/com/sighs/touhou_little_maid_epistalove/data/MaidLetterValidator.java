@@ -1,8 +1,8 @@
 package com.sighs.touhou_little_maid_epistalove.data;
 
+import cc.sighs.oelib.data.api.DataValidator;
 import com.flechazo.contact.common.item.IPackageItem;
-import com.flechazo.contact.resourse.PostcardDataManager;
-import com.mafuyu404.oelib.api.data.DataValidator;
+import com.flechazo.contact.data.PostcardDataManager;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;

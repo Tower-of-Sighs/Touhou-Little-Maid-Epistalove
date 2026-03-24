@@ -1,6 +1,6 @@
 package com.sighs.touhou_little_maid_epistalove;
 
-import com.mafuyu404.oelib.data.DataRegistry;
+import cc.sighs.oelib.data.DataRegistry;
 import com.mojang.logging.LogUtils;
 import com.sighs.touhou_little_maid_epistalove.command.MaidLetterCommand;
 import com.sighs.touhou_little_maid_epistalove.config.ModConfig;
