@@ -1,6 +1,6 @@
 package com.sighs.touhou_little_maid_epistalove.data;
 
-import com.mafuyu404.oelib.api.data.DataDriven;
+import cc.sighs.oelib.data.api.DataDriven;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.sighs.touhou_little_maid_epistalove.TLMEpistalove;

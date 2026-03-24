@@ -204,11 +204,11 @@ dependencies {
     implementation fg.deobf("mezz.jei:jei-1.20.1-forge:15.20.0.104")
     implementation fg.deobf("curse.maven:jade-324717:6271651")
     implementation fg.deobf("curse.maven:touhou-little-maid-355044:6979039")
-    implementation fg.deobf('com.mafuyu404.oelib:OELib-forge-1.20.1:0.0.6')
+    implementation fg.deobf('cc.sighs.oelib:OELib-forge-1.20.1:0.2.2')
     implementation fg.deobf("curse.maven:architectury-api-419699:5137938")
     implementation fg.deobf("curse.maven:jupiter-1072905:6843043")
     implementation fg.deobf("curse.maven:kiwi-303657:6466335")
-    implementation fg.deobf("libs:Contact:forge-1.2.1-hotfix")
+    implementation fg.deobf('com.flechazo:Contact-forge:1.2.3')
 
     compileOnly fg.deobf("vazkii.patchouli:Patchouli:${patchouli_version}:api")
     runtimeOnly fg.deobf("vazkii.patchouli:Patchouli:${patchouli_version}")

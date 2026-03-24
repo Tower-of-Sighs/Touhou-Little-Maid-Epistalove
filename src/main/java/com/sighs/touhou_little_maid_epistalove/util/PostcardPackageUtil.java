@@ -1,7 +1,7 @@
 package com.sighs.touhou_little_maid_epistalove.util;
 
 import com.flechazo.contact.common.item.IPackageItem;
-import com.flechazo.contact.resourse.PostcardDataManager;
+import com.flechazo.contact.data.PostcardDataManager;
 import com.github.tartaricacid.touhoulittlemaid.util.ItemsUtil;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
