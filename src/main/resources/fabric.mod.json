@@ -34,8 +34,8 @@
     "fabricloader": "*",
     "fabric": "*",
     "minecraft": "${minecraft_version}",
-    "contact": ">=1.2.2",
-    "oelib": ">=0.0.6",
+    "contact": ">=1.2.3",
+    "oelib": ">=0.2.2",
     "touhou_little_maid": "*",
     "cloth-config2": "*"
   },
