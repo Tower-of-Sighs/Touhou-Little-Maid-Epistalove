@@ -166,14 +166,14 @@ dependencies {
     implementation ("curse.maven:kiwi-303657:7082554")
 
     // OELib
-    implementation 'cc.sighs.oelib:OELib-neoforge-1.21.1:0.0.8'
-    runtimeOnly 'cc.sighs.oelib:OELib-neoforge-1.21.1:0.0.8'
+    implementation 'cc.sighs.oelib:OELib-neoforge-1.21.1:0.2.3'
+    runtimeOnly 'cc.sighs.oelib:OELib-neoforge-1.21.1:0.2.3'
 
     // Contact
-    implementation 'com.flechazo:Contact-neoforge:1.2.3'
+    implementation "curse.maven:contact-love-rekindled-1326820:7450326"
 
     // TLM
-    implementation "curse.maven:touhou-little-maid-355044:6988538"
+    implementation "curse.maven:touhou-little-maid-355044:7894267"
 
     // Patchouli
     compileOnly "vazkii.patchouli:Patchouli:${patchouli_version}:api"

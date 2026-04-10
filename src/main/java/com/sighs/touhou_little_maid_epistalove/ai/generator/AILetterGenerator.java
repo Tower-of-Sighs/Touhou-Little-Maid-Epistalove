@@ -13,8 +13,8 @@ import com.mojang.logging.LogUtils;
 import com.sighs.touhou_little_maid_epistalove.ai.parser.ILetterParser;
 import com.sighs.touhou_little_maid_epistalove.ai.prompt.IPromptBuilder;
 import com.sighs.touhou_little_maid_epistalove.api.letter.ILetterGenerator;
-import com.sighs.touhou_little_maid_epistalove.config.AILetterConfig;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
 import org.slf4j.Logger;
@@ -84,29 +84,40 @@ public class AILetterGenerator implements ILetterGenerator {
         List<LLMMessage> chat = new ArrayList<>();
         chat.add(LLMMessage.systemChat(maid, system));
         chat.add(LLMMessage.userChat(maid, userPrompt));
-        LLMConfig config = createEnhancedLLMConfig(chatManager.getLLMModel(), maid);
-        client.chat(chat, config, new LLMCallback(chatManager, "", 0) {
+        client.chat(new LLMCallback(chatManager, chat, true) {
+            {
+                this.needAddTools = false;
+            }
+
             @Override
             public void onSuccess(ResponseChat responseChat) {
                 String content = responseChat.chatText;
                 String senderName = maid.getName().getString();
                 ItemStack result = letterParser.parseToLetter(content, senderName, maid);
-                callback.accept(result);
+                runCallbackOnServerThread(maid, callback, result);
             }
 
             @Override
             public void onFailure(HttpRequest request, Throwable throwable, int errorCode) {
                 LOGGER.error("[MaidMail][AI] onFailure code={} msg={}", errorCode,
                         throwable != null ? throwable.getMessage() : "null");
-                callback.accept(ItemStack.EMPTY);
+                runCallbackOnServerThread(maid, callback, ItemStack.EMPTY);
             }
 
             @Override
-            public void onFunctionCall(Message message, List<LLMMessage> messages, LLMConfig config, LLMClient client) {
+            public void onFunctionCall(Message message, LLMClient client) {
                 LOGGER.warn("[MaidMail][AI] unexpected function call in letter phase; ignored");
                 onFailure(null, new RuntimeException("Unexpected function call"), ErrorCode.JSON_DECODE_ERROR);
             }
         });
+    }
+
+    private static void runCallbackOnServerThread(EntityMaid maid, Consumer<ItemStack> callback, ItemStack result) {
+        if (maid.level() instanceof ServerLevel serverLevel) {
+            serverLevel.getServer().submit(() -> callback.accept(result));
+        } else {
+            callback.accept(result);
+        }
     }
 
     private String interpolatePrompt(String p, CompoundTag ctx) {
@@ -122,14 +133,5 @@ public class AILetterGenerator implements ILetterGenerator {
     @Override
     public String getType() {
         return "ai";
-    }
-
-    private LLMConfig createEnhancedLLMConfig(String model, EntityMaid maid) {
-        double temperatureBoost = AILetterConfig.CREATIVITY_TEMPERATURE_BOOST.get();
-        double enhancedTemperature = Math.min(1.2, AIConfig.LLM_TEMPERATURE.get() + temperatureBoost);
-
-        int enhancedMaxTokens = Math.max(AIConfig.LLM_MAX_TOKEN.get(), 200);
-
-        return new LLMConfig(model, enhancedTemperature, enhancedMaxTokens, maid, ChatType.AUTO_GEN_SETTING);
     }
 }

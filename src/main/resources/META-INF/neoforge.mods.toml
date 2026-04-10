@@ -35,14 +35,14 @@ side = "BOTH"
 [[dependencies."${mod_id}"]]
 modId = "touhou_little_maid"
 mandatory = true
-versionRange = "[1.0.0,)"
+versionRange = "[1.5.2,)"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies."${mod_id}"]]
 modId = "oelib"
 mandatory = true
-versionRange = "[0.0.8,)"
+versionRange = "[0.2.3,)"
 ordering = "NONE"
 side = "BOTH"
 

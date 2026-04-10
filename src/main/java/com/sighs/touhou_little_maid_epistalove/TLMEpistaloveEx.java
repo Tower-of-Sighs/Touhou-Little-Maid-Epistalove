@@ -1,12 +1,12 @@
 package com.sighs.touhou_little_maid_epistalove;
 
-import com.github.tartaricacid.touhoulittlemaid.ai.service.function.FunctionCallRegister;
+import com.github.tartaricacid.touhoulittlemaid.ai.agent.tool.ToolRegister;
 import com.github.tartaricacid.touhoulittlemaid.api.ILittleMaid;
 import com.github.tartaricacid.touhoulittlemaid.api.LittleMaidExtension;
 import com.github.tartaricacid.touhoulittlemaid.api.entity.data.TaskDataKey;
 import com.github.tartaricacid.touhoulittlemaid.entity.ai.brain.ExtraMaidBrainManager;
 import com.github.tartaricacid.touhoulittlemaid.entity.data.TaskDataRegister;
-import com.sighs.touhou_little_maid_epistalove.ai.function.WriteLetterFunction;
+import com.sighs.touhou_little_maid_epistalove.ai.tool.WriteLetterTool;
 import com.sighs.touhou_little_maid_epistalove.entity.ai.ContactMailExtraBrain;
 import com.sighs.touhou_little_maid_epistalove.entity.ai.behavior.LetterGenerationService;
 import net.minecraft.nbt.CompoundTag;
@@ -25,10 +25,9 @@ public class TLMEpistaloveEx implements ILittleMaid {
     }
 
     @Override
-    public void registerAIFunctionCall(FunctionCallRegister register) {
-        register.register(new WriteLetterFunction());
+    public void registerAITool(ToolRegister register) {
+        register.register(new WriteLetterTool());
     }
-
     @Override
     public void addExtraMaidBrain(ExtraMaidBrainManager manager) {
         manager.addExtraMaidBrain(new ContactMailExtraBrain());
