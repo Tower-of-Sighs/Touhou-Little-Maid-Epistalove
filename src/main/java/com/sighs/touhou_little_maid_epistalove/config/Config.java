@@ -13,8 +13,6 @@ public final class Config {
     public static final int DEFAULT_HIGH_QUALITY_THRESHOLD = 80;
     public static final int DEFAULT_PATH_SAFETY_PERCENTAGE = 65;
     public static final int DEFAULT_MAX_CONSECUTIVE_DANGEROUS = 2;
-    public static final boolean DEFAULT_LOST_RESCUE_MAIL_ENABLED = true;
-    public static final int DEFAULT_LOST_RESCUE_MAIL_COOLDOWN_MINUTES = 10;
 
     public static final ForgeConfigSpec.IntValue MAILBOX_SEARCH_RADIUS;
 
@@ -24,9 +22,6 @@ public final class Config {
 
     public static final ForgeConfigSpec.IntValue PATH_SAFETY_PERCENTAGE;
     public static final ForgeConfigSpec.IntValue MAX_CONSECUTIVE_DANGEROUS;
-
-    public static final ForgeConfigSpec.BooleanValue LOST_RESCUE_MAIL_ENABLED;
-    public static final ForgeConfigSpec.IntValue LOST_RESCUE_MAIL_COOLDOWN_MINUTES;
 
     static {
         ForgeConfigSpec.Builder builder = new ForgeConfigSpec.Builder();
@@ -62,14 +57,6 @@ public final class Config {
         builder.pop();
 
         builder.push("lost_rescue_mail");
-        LOST_RESCUE_MAIL_ENABLED = builder
-                .comment("女仆走丢/卸载时是否自动投递求救信到绑定的邮箱（需要玩家绑定邮箱）")
-                .define("enabled", DEFAULT_LOST_RESCUE_MAIL_ENABLED);
-
-        LOST_RESCUE_MAIL_COOLDOWN_MINUTES = builder
-                .comment("同一只女仆重复投递求救信的冷却时间（分钟），用于避免频繁卸载导致刷信")
-                .defineInRange("cooldown_minutes", DEFAULT_LOST_RESCUE_MAIL_COOLDOWN_MINUTES, 0, 1440);
-        builder.pop();
 
         SERVER_SPEC = builder.build();
     }
